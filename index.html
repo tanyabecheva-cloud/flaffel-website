@@ -1,0 +1,482 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flaffel — democratic meal planner</title>
+<meta property="og:title" content="flaffel — democratic meal planner">
+<meta name="description" content="Democratic meal planning app — end the dinner debate for good.">
+<meta property="og:description" content="Democratic meal planning app — end the dinner debate for good.">
+<meta property="og:image" content="https://tiiny.host/assets/logo-purple-bg.png">
+<meta property="og:url" content="https://www.flaffel.app/">
+<meta property="og:type" content="website">
+<script defer data-domain="www.flaffel.app" src="https://analytics.tiiny.site/js/plausible.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@200;300;400;500;600;700;800;900&family=Fraunces:ital,wght@1,300;1,400&display=swap" rel="stylesheet">
+<script src="https://player.vimeo.com/api/player.js"></script>
+
+<style>
+:root{--terra:#E07A5F;--hearth:#C76A4A;--sage:#B2C4A8;--slate:#4A4A48;--parch:#FAF5F0;--linen:#F0E8DC;--white:#ffffff;--tx:#4A4A48;--tl:#7a7a78;--bd:#E8DDD5;}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var(--parch);color:var(--tx)}
+#splash{position:fixed;inset:0;z-index:9999;background:var(--terra);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6rem;transition:opacity .8s ease,visibility .8s ease;}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+#splash-video-wrap{position:relative;width:min(200px,45vw);flex-shrink:0;border-radius:16px;overflow:hidden;}
+#splash-video-wrap::before{content:'';display:block;padding-top:148.98%;}
+#splash-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;pointer-events:none;}
+.splash-wordmark{font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(4rem,14vw,7rem);letter-spacing:-4px;color:var(--parch);line-height:1;opacity:0;animation:fadeInDown .7s ease .4s forwards;text-shadow:0 2px 24px rgba(180,70,40,0.3);}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+.splash-tagline{font-family:'Outfit',sans-serif;font-weight:500;font-size:clamp(.85rem,2.5vw,1.1rem);color:rgba(250,245,240,.75);letter-spacing:.08em;opacity:0;animation:fadeInUp .7s ease .7s forwards;}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.enter-btn{font-family:'Outfit',sans-serif;font-weight:700;font-size:1.05rem;color:var(--terra);background:var(--parch);border:none;border-radius:50px;padding:14px 44px;cursor:pointer;letter-spacing:-0.2px;opacity:0;animation:fadeInUp .7s ease 1s forwards;transition:transform .2s,box-shadow .2s,background .2s;box-shadow:0 4px 24px rgba(0,0,0,.18);}
+.enter-btn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 10px 36px rgba(0,0,0,.22);background:var(--linen)}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,245,240,.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:0 1.5rem;height:66px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Outfit',sans-serif;font-weight:800;font-size:1.6rem;letter-spacing:-1.5px;color:var(--hearth);text-decoration:none}
+.nav-cta{background:var(--terra);color:var(--parch);padding:9px 22px;border-radius:50px;font-weight:600;text-decoration:none;font-size:.95rem;transition:.2s;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+.nav-cta:hover{background:var(--hearth);transform:translateY(-1px)}
+.hero{padding:130px 1.5rem 80px;text-align:center;background:var(--terra);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(199,106,74,.4) 0%,transparent 60%),radial-gradient(ellipse at 70% 20%,rgba(178,196,168,.15) 0%,transparent 50%);pointer-events:none}
+.hero::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(250,245,240,.08) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+.hero-inner{position:relative;z-index:1;max-width:820px;margin:0 auto}
+.hero-wordmark{font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(4rem,12vw,8rem);letter-spacing:-4px;color:var(--parch);line-height:1;margin-bottom:16px;display:block;}
+.hero-tagline{font-family:'Outfit',sans-serif;font-weight:700;font-size:clamp(1rem,2.8vw,1.45rem);color:var(--terra);margin-bottom:10px;letter-spacing:-0.3px;line-height:1.3;background:var(--parch);display:inline-block;padding:6px 20px;border-radius:50px;}
+.hero-sub{font-size:clamp(.9rem,2.2vw,1.05rem);color:rgba(250,245,240,.65);max-width:520px;margin:0 auto 36px;line-height:1.7}
+.progress-wrap{max-width:420px;margin:0 auto 28px;padding:0 1rem}
+.progress-bar{background:rgba(250,245,240,.2);border-radius:50px;height:10px;overflow:hidden}
+.progress-fill{background:var(--parch);height:100%;border-radius:50px;width:0%;transition:width 1.5s cubic-bezier(.25,.46,.45,.94)}
+.progress-label{text-align:center;margin-top:8px;font-size:.85rem;color:rgba(250,245,240,.7)}
+.progress-label strong{color:var(--parch)}
+.hero-form{display:flex;gap:10px;max-width:440px;margin:0 auto 12px;flex-wrap:wrap;justify-content:center}
+.hero-form input[type="email"]{flex:1;min-width:220px;padding:14px 22px;border-radius:50px;border:2px solid rgba(250,245,240,.3);background:rgba(250,245,240,.15);color:var(--parch);font-size:1rem;font-family:'DM Sans',sans-serif;outline:none;transition:.3s}
+.hero-form input[type="email"]::placeholder{color:rgba(250,245,240,.5)}
+.hero-form input[type="email"]:focus{border-color:var(--parch);background:rgba(250,245,240,.2)}
+.hero-form button{background:var(--parch);color:var(--hearth);border:none;padding:14px 28px;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.25s}
+.hero-form button:hover{background:var(--linen);transform:translateY(-2px)}
+.hero-note{font-size:.78rem;color:rgba(250,245,240,.5);text-align:center}
+.hero-success{display:none;text-align:center;max-width:500px;margin:0 auto;padding:1rem}
+.hero-success.show{display:block}
+.hero-success h3{font-family:'Outfit',sans-serif;font-weight:800;font-size:1.6rem;color:var(--parch);margin-bottom:8px}
+.hero-success p{color:rgba(250,245,240,.75);font-size:.95rem;line-height:1.6;margin-bottom:20px}
+.share-label{font-size:.78rem;color:rgba(250,245,240,.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+.share-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.share-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:50px;font-size:.82rem;font-weight:600;font-family:'DM Sans',sans-serif;text-decoration:none;border:none;cursor:pointer;transition:transform .2s,opacity .2s}
+.share-btn:hover{transform:translateY(-2px);opacity:.9}
+.share-btn.whatsapp{background:#25D366;color:#fff}
+.share-btn.twitter{background:#000;color:#fff}
+.share-btn.facebook{background:#1877F2;color:#fff}
+.share-btn.email{background:rgba(250,245,240,.2);color:var(--parch);border:1.5px solid rgba(250,245,240,.3)}
+.share-btn.copy{background:rgba(250,245,240,.2);color:var(--parch);border:1.5px solid rgba(250,245,240,.3)}
+.share-btn.copy.copied{background:var(--sage);border-color:var(--sage);color:var(--slate)}
+.cta-share .share-btn.email,.cta-share .share-btn.copy{background:rgba(255,255,255,.08);color:var(--parch);border:1.5px solid rgba(255,255,255,.2)}
+.cta-share .share-label{color:rgba(250,245,240,.4)}
+.wave{display:block;width:100%;overflow:hidden;line-height:0;background:var(--terra)}
+.wave svg{display:block;width:100%;height:60px}
+.video-section{background:var(--parch);padding:70px 1.5rem 60px}
+.video-wrap{max-width:900px;margin:0 auto}
+.video-container{position:relative;padding:56.25% 0 0 0;border-radius:20px;overflow:hidden;box-shadow:0 24px 64px rgba(74,74,72,.18)}
+.video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+.video-caption{text-align:center;font-size:.82rem;color:var(--tl);margin-top:12px;font-style:italic}
+.features{background:var(--linen);padding:70px 1.5rem 90px;overflow:visible}
+.features h2{font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(1.8rem,4vw,2.8rem);text-align:center;color:var(--slate);letter-spacing:-1px;margin-bottom:8px}
+.features h2 .accent{color:var(--terra)}
+.features-sub{text-align:center;color:var(--tl);font-size:1.05rem;margin-bottom:56px;max-width:500px;margin-left:auto;margin-right:auto}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:1100px;margin:0 auto;padding:40px 8px 16px;overflow:visible}
+.feat-card{background:var(--white);border-radius:20px;padding:28px 24px;border:1.5px solid var(--bd);transition:.3s;position:relative;cursor:pointer;transform-origin:center center}
+.feat-card:hover{box-shadow:0 16px 40px rgba(224,122,95,.2);border-color:var(--terra);border-width:2px}
+.feat-card.open{border-color:var(--terra)}
+.feat-badge{display:inline-block;background:var(--linen);color:var(--hearth);padding:3px 10px;border-radius:50px;font-size:.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.feat-icon{width:48px;height:48px;border-radius:12px;background:var(--linen);display:flex;align-items:center;justify-content:center;margin-bottom:14px;transition:.3s;flex-shrink:0}
+.feat-card.open .feat-icon,.feat-card:hover .feat-icon{background:var(--terra)}
+.feat-icon svg{width:24px;height:24px;stroke:var(--terra);stroke-width:2;fill:none;transition:.3s}
+.feat-card.open .feat-icon svg,.feat-card:hover .feat-icon svg{stroke:var(--parch)}
+.feat-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.feat-header h3{font-size:1.05rem;font-weight:700;color:var(--slate);flex:1}
+.feat-toggle{width:28px;height:28px;border-radius:50%;background:var(--linen);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.3s}
+.feat-card.open .feat-toggle{background:var(--terra)}
+.feat-toggle svg{width:14px;height:14px;stroke:var(--slate);stroke-width:2.5;fill:none;transition:transform .3s}
+.feat-card.open .feat-toggle svg{stroke:var(--parch);transform:rotate(180deg)}
+.feat-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.25,.46,.45,.94),opacity .3s;opacity:0}
+.feat-card.open .feat-body{max-height:200px;opacity:1}
+.feat-body p{font-size:.88rem;color:var(--tl);line-height:1.65;padding-top:12px;border-top:1px solid var(--bd);margin-top:12px}
+.forwho{background:var(--parch);padding:80px 0}
+.forwho-head{text-align:center;padding:0 1.5rem;margin-bottom:48px}
+.forwho-head h2{font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(1.8rem,4vw,2.6rem);color:var(--slate);letter-spacing:-1px}
+.forwho-head h2 .accent{color:var(--terra)}
+.carousel-outer{overflow:hidden;position:relative}
+.carousel-outer::before,.carousel-outer::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
+.carousel-outer::before{left:0;background:linear-gradient(90deg,var(--parch),transparent)}
+.carousel-outer::after{right:0;background:linear-gradient(270deg,var(--parch),transparent)}
+.carousel-track{display:flex;gap:16px;width:max-content;animation:scroll 28s linear infinite}
+.carousel-track:hover{animation-play-state:paused}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.who-card{background:var(--white);border-radius:16px;padding:24px 22px;border:1.5px solid var(--bd);transition:.3s;text-align:center;flex:0 0 200px;width:200px}
+.who-card:hover{border-color:var(--terra);border-width:2px;box-shadow:0 12px 30px rgba(224,122,95,.15)}
+.who-icon{width:48px;height:48px;border-radius:50%;background:var(--linen);border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;transition:.3s}
+.who-card:hover .who-icon{background:var(--terra);border-color:var(--terra)}
+.who-icon svg{width:22px;height:22px;stroke:var(--terra);stroke-width:2;fill:none;transition:.3s}
+.who-card:hover .who-icon svg{stroke:var(--parch)}
+.who-card h3{font-size:.95rem;font-weight:700;color:var(--slate);margin-bottom:4px}
+.who-card p{font-size:.8rem;color:var(--tl);line-height:1.4}
+.cta{background:var(--slate);color:var(--parch);text-align:center;padding:100px 1.5rem 120px;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(224,122,95,.15) 0%,transparent 60%);pointer-events:none}
+.cta-inner{position:relative;z-index:1;max-width:580px;margin:0 auto}
+.cta-wordmark{font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(3rem,8vw,5.5rem);letter-spacing:-3px;color:var(--terra);display:block;line-height:1;margin-bottom:20px}
+.cta h2{font-family:'Outfit',sans-serif;font-weight:700;font-size:clamp(1.4rem,3.5vw,2rem);margin-bottom:12px;letter-spacing:-0.5px}
+.cta p{color:rgba(250,245,240,.6);font-size:1rem;margin-bottom:36px;line-height:1.7;max-width:440px;margin-left:auto;margin-right:auto}
+.cta-form{display:flex;flex-direction:column;gap:12px;max-width:440px;margin:0 auto}
+.cta-form input[type="email"]{padding:16px 24px;border-radius:50px;border:2px solid rgba(250,245,240,.15);background:rgba(250,245,240,.07);color:var(--parch);font-size:1rem;font-family:'DM Sans',sans-serif;outline:none}
+.cta-form input[type="email"]::placeholder{color:rgba(250,245,240,.35)}
+.cta-form input[type="email"]:focus{border-color:var(--terra)}
+.cta-form button{background:var(--terra);color:var(--parch);border:none;padding:16px 32px;border-radius:50px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.25s}
+.cta-form button:hover{background:var(--hearth)}
+.cta-success{display:none;font-family:'Outfit',sans-serif;font-weight:700;font-size:1.4rem;color:var(--terra);margin-top:1.5rem}
+.cta-success.show{display:block}
+.cta-legal{font-size:.78rem;color:rgba(250,245,240,.3);margin-top:20px;line-height:1.5;max-width:440px;margin-left:auto;margin-right:auto}
+.store-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+.store-btn{display:inline-flex;align-items:center;gap:10px;background:rgba(250,245,240,.08);border:1.5px solid rgba(250,245,240,.15);border-radius:12px;padding:10px 20px;text-decoration:none;color:var(--parch);transition:.3s}
+.store-btn:hover{border-color:var(--terra);transform:scale(1.04)}
+.store-btn svg{width:22px;height:22px;fill:var(--parch)}
+.store-btn .st{text-align:left;line-height:1.2}.store-btn .ss{font-size:.65rem;opacity:.6}.store-btn .sb2{font-size:.95rem;font-weight:600}
+footer{background:var(--slate);border-top:1px solid rgba(250,245,240,.08);padding:32px 1.5rem;text-align:center;font-size:.85rem;color:rgba(250,245,240,.3)}
+footer .foot-logo{font-family:'Outfit',sans-serif;font-weight:800;font-size:1.4rem;letter-spacing:-1px;color:var(--terra);display:block;margin-bottom:10px}
+.sbar{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(250,245,240,.96);backdrop-filter:blur(20px);border-top:1px solid var(--bd);padding:10px 16px;z-index:100}
+.sbar.vi{display:block}
+.sbar form{display:flex;gap:8px;max-width:500px;margin:0 auto}
+.sbar input[type="email"]{flex:1;padding:10px 16px;border-radius:50px;border:2px solid var(--bd);font-size:.9rem;font-family:'DM Sans',sans-serif;outline:none;color:var(--tx);min-width:0}
+.sbar input[type="email"]:focus{border-color:var(--terra)}
+.sbar button{background:var(--terra);color:var(--parch);border:none;padding:10px 20px;border-radius:50px;font-size:.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--slate);color:var(--parch);padding:12px 24px;border-radius:50px;font-size:.9rem;font-weight:500;z-index:9999;display:flex;align-items:center;gap:8px;box-shadow:0 8px 30px rgba(0,0,0,.25);transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s;opacity:0;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast svg{width:16px;height:16px;stroke:var(--terra);stroke-width:2.5;fill:none;flex-shrink:0}
+@media(max-width:768px){.sbar.vi{display:block}.cta{padding-bottom:140px}.feat-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.hero-form{flex-direction:column}.hero-form input[type="email"]{min-width:auto}.feat-grid{padding:0 .5rem}}
+</style>
+</head>
+<body>
+<div id="page-wrap" style="overflow-x:hidden">
+
+<script>
+function enterSite(){
+  document.getElementById('splash').classList.add('hide');
+  try{sessionStorage.setItem('splashSeen','1');}catch(e){}
+}
+function toggleFeat(card){
+  var isOpen=card.classList.contains('open');
+  var openCards=document.querySelectorAll('.feat-card.open');
+  openCards.forEach(function(c){c.classList.remove('open');});
+  if(!isOpen){
+    var delay=openCards.length>0?120:0;
+    setTimeout(function(){card.classList.add('open');},delay);
+  }
+}
+/* splash always shows on every page load */
+function launchConfetti(){
+  var colors=['#E07A5F','#FAF5F0','#C76A4A','#F0E8DC','#B2C4A8','#ffffff','#FFD700','#4A4A48'];
+  var canvas=document.createElement('canvas');
+  canvas.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99999;';
+  document.body.appendChild(canvas);
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  var ctx=canvas.getContext('2d');
+  var particles=[];
+  for(var i=0;i<220;i++){
+    var angle=(Math.random()*360-90)*Math.PI/180;
+    var speed=8+Math.random()*14;
+    particles.push({
+      x:canvas.width/2+(Math.random()-0.5)*canvas.width*0.6,
+      y:canvas.height*0.3+Math.random()*canvas.height*0.2,
+      vx:Math.cos(angle)*speed,
+      vy:Math.sin(angle)*speed-6,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      w:8+Math.random()*8,h:4+Math.random()*6,
+      rot:Math.random()*360,rotV:(Math.random()-0.5)*12,
+      life:1,decay:0.012+Math.random()*0.008
+    });
+  }
+  // extra bursts from sides
+  for(var j=0;j<80;j++){
+    particles.push({x:0,y:canvas.height*0.4,vx:10+Math.random()*10,vy:(Math.random()-0.5)*12,color:colors[Math.floor(Math.random()*colors.length)],w:7+Math.random()*7,h:4+Math.random()*5,rot:Math.random()*360,rotV:(Math.random()-0.5)*10,life:1,decay:0.014+Math.random()*0.008});
+    particles.push({x:canvas.width,y:canvas.height*0.4,vx:-10-Math.random()*10,vy:(Math.random()-0.5)*12,color:colors[Math.floor(Math.random()*colors.length)],w:7+Math.random()*7,h:4+Math.random()*5,rot:Math.random()*360,rotV:(Math.random()-0.5)*10,life:1,decay:0.014+Math.random()*0.008});
+  }
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    var alive=false;
+    for(var i=0;i<particles.length;i++){
+      var p=particles[i];
+      if(p.life<=0)continue;
+      alive=true;
+      p.vy+=0.4;p.vx*=0.99;
+      p.x+=p.vx;p.y+=p.vy;
+      p.rot+=p.rotV;p.life-=p.decay;
+      ctx.save();ctx.globalAlpha=Math.max(0,p.life);
+      ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    }
+    if(alive){requestAnimationFrame(draw);}
+    else{if(canvas.parentNode)canvas.parentNode.removeChild(canvas);}
+  }
+  draw();
+}
+function copyLink(btn){
+  navigator.clipboard.writeText('https://flaffel.app').then(function(){
+    btn.classList.add('copied');
+    var span=btn.querySelector('span');
+    if(span){var orig=span.textContent;span.textContent='Copied!';setTimeout(function(){btn.classList.remove('copied');span.textContent=orig;},2500);}
+  });
+}
+function showToast(msg){
+  var t=document.getElementById('toast'),m=document.getElementById('toastMsg');
+  if(!t||!m)return;
+  m.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},4000);
+}
+</script>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-wordmark">flaffel</div>
+  <div id="splash-video-wrap">
+    <iframe src="https://player.vimeo.com/video/1167705566?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="flaffy"></iframe>
+  </div>
+  <p class="splash-tagline">democratic meal planning</p>
+  <button class="enter-btn" onclick="enterSite()">Let's eat</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">flaffel</a>
+  <a href="#join" class="nav-cta">Join the Beta</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-wordmark">flaffel</span>
+    <p class="hero-tagline">AI + sprinkle of democracy = food decisions sorted!</p>
+    <p class="hero-sub">This app is for anyone who's ever opened the fridge, closed it, opened it again, and still had no idea what to make.</p>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="pbar"></div></div>
+      <p class="progress-label">We're <strong>70%</strong> of the way to launch — get in early!</p>
+    </div>
+    <div id="hero-form-wrap">
+      <form id="heroForm" class="hero-form">
+        <input type="hidden" name="access_key" value="1bf9dafd-9dc5-42ff-b6cf-1cc6b5b076db">
+        <input type="hidden" name="subject" value="New Flaffel Waitlist Signup">
+        <input type="hidden" name="from_name" value="Flaffel Waitlist">
+        <input type="text" name="_gotcha" style="display:none" aria-hidden="true">
+        <input type="email" name="email" placeholder="Your email address" required autocomplete="email">
+        <button type="submit">Count Me In</button>
+      </form>
+      <p class="hero-note">No spam. Ever. Unsubscribe anytime.</p>
+    </div>
+    <div class="hero-success" id="heroSuccess">
+      <h3>You're in! 🎉</h3>
+      <p>Thanks for signing up! Check your email — we've sent you a confirmation. We'll ping you the moment beta opens.</p>
+      <p class="share-label">Spread the word</p>
+      <div class="share-btns">
+        <a class="share-btn whatsapp" href="https://wa.me/?text=I%20just%20joined%20the%20flaffel%20waitlist%20%E2%80%94%20it%27s%20an%20app%20that%20settles%20the%20%22what%27s%20for%20dinner%3F%22%20debate%20for%20good.%20Sign%20up%20here%3A%20https%3A%2F%2Fflaffel.app" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a class="share-btn twitter" href="https://twitter.com/intent/tweet?text=Just%20joined%20the%20flaffel%20waitlist%20%F0%9F%8D%BD%EF%B8%8F%20%E2%80%94%20finally%20an%20app%20that%20solves%20%22what%27s%20for%20dinner%3F%22%20for%20good.%20Sign%20up%3A%20https%3A%2F%2Fflaffel.app" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          <span>X / Twitter</span>
+        </a>
+        <a class="share-btn facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fflaffel.app" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.313 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg><span>Facebook</span></a>
+        <a class="share-btn email" href="/cdn-cgi/l/email-protection#0b34787e69616e687f3652647e2e393b656e6e6f2e393b7f642e393b7f79722e393b6d676a6d6d6e672d69646f7236436e722a2e393b422e393b617e787f2e393b616462656e6f2e393b7f636e2e393b6d676a6d6d6e672e393b7c6a627f6762787f2e393b2e4e392e333b2e323f2e393b627f2e393c782e393b6a652e393b6a7b7b2e393b7f636a7f2e393b6d62656a6767722e393b7864677d6e782e393b2e39397c636a7f2e393c782e393b6d64792e393b6f6265656e792e384d2e39392e393b48636e68602e393b627f2e393b647e7f2e384a2e393b637f7f7b782e384a2e394d2e394d6d676a6d6d6e67256a7b7b">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span>Email a friend</span>
+        </a>
+        <button class="share-btn copy" onclick="copyLink(this)" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <span>Copy link</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#FAF5F0"></path>
+  </svg>
+</div>
+
+<!-- FOR WHO CAROUSEL -->
+<section class="forwho">
+  <div class="forwho-head"><h2>flaffel is for <span class="accent">everyone</span></h2></div>
+  <div class="carousel-outer">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg></div><h3>Couples</h3><p>End the nightly standoff.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div><h3>Families</h3><p>Picky eaters, meet your match.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div><h3>Friend Groups</h3><p>Plan dinners without drama.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg></div><h3>Office Teams</h3><p>Team lunches, sorted.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><h3>Roommates</h3><p>Split groceries fairly.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Communities</h3><p>Block parties &amp; meetups.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg></div><h3>Co-workers</h3><p>Lunch roulette, solved.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><h3>Solo Cooks</h3><p>Inspiration when you need it.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg></div><h3>Couples</h3><p>End the nightly standoff.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div><h3>Families</h3><p>Picky eaters, meet your match.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div><h3>Friend Groups</h3><p>Plan dinners without drama.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg></div><h3>Office Teams</h3><p>Team lunches, sorted.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><h3>Roommates</h3><p>Split groceries fairly.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Communities</h3><p>Block parties &amp; meetups.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg></div><h3>Co-workers</h3><p>Lunch roulette, solved.</p></div>
+      <div class="who-card"><div class="who-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><h3>Solo Cooks</h3><p>Inspiration when you need it.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section class="video-section">
+  <div class="video-wrap">
+    <div class="video-container">
+      <iframe src="https://player.vimeo.com/video/1167694671?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Humanity's Toughest Question"></iframe>
+    </div>
+    <p class="video-caption">Humanity's toughest questions, finally answered.</p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <h2>Why you'll love <span class="accent">flaffel</span></h2>
+  <p class="features-sub">Nine features. One app. Zero dinner drama.</p>
+  <div class="feat-grid">
+    <div class="feat-card" onclick="toggleFeat(this)"><div class="feat-badge">our favourite</div><div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12l3 3 5-6"/></svg></div><div class="feat-header"><h3>Vote on Dinner</h3><button class="feat-toggle" aria-label="Expand"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="feat-body"><p>Your household swipes and votes on meals like they're rating movies. Most loved wins. Democracy at the dinner table.</p></div></div>
+    <div class="feat-card" onclick="toggleFeat(this)"><div class="feat-badge">game changer</div><div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="13" r="3"/><path d="M12 6h.01"/></svg></div><div class="feat-header"><h3>Scan Your Fridge</h3><button class="feat-toggle" aria-label="Expand"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="feat-body"><p>Point your phone at what you have. Flaffel figures out what you can cook. Chef energy, zero effort.</p></div></div>
+    <div class="feat-card" onclick="toggleFeat(this)"><div class="feat-badge">one tap</div><div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg></div><div class="feat-header"><h3>Send Pickup Requests</h3><button class="feat-toggle" aria-label="Expand"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="feat-body"><p>Ping your partner: "Grab milk on the way home." No more calls. No forgotten texts. Just dinner, sorted.</p></div></div>
+    <div class="feat-card" onclick="toggleFeat(this)"><div class="feat-badge">order from chaos</div><div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M8 7h8M8 11h5"/></svg></div><div class="feat-header"><h3>Save Recipes Anywhere</h3><button class="feat-toggle" aria-label="Expand"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="feat-body"><p>No more 47 screenshots you'll never find. Save from any website. Actually find them later. Revolutionary.</p></div></div>
+    <div class="feat-card" onclick="toggleFeat(this)"><div class="feat-badge">save money</div><div class="feat-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></div><div class="feat-header"><h3>Price Comparisons</h3><button class="feat-toggle" aria-label="Expand"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="feat-body"><p>We check nearby stores so you get the best deal on your shopping list. Your wallet will thank you.</p></div></div>
+    <div class="feat-card" onclick="toggleFeat(this)"><div class="feat-badge">waste less</div><div class="feat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="9"/><path d="M12 9v4l3 2"/><path d="M5 3l2 2M19 3l-2 2"/></svg></div><div class="feat-header"><h3>Beat the Expiry Date</h3><button class="feat-toggle" aria-label="Expand"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="feat-body"><p>Gentle nudges to use what's in your fridge before it goes bad. Good for your wallet and the planet.</p></div></div>
+    <div class="feat-card" onclick="toggleFeat(this)"><div class="feat-badge">sharing is caring</div><div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg></div><div class="feat-header"><h3>Share Recipes Instantly</h3><button class="feat-toggle" aria-label="Expand"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="feat-body"><p>One tap to send a recipe to anyone. Family, friends, that colleague who always asks what you had for lunch.</p></div></div>
+    <div class="feat-card" onclick="toggleFeat(this)"><div class="feat-badge">real time</div><div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="4" cy="6" r="2"/><circle cx="4" cy="12" r="2"/><circle cx="4" cy="18" r="2"/></svg></div><div class="feat-header"><h3>Shared Shopping List</h3><button class="feat-toggle" aria-label="Expand"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="feat-body"><p>Everyone sees and adds to the same list in real time. No duplicates. No forgotten items. No excuses.</p></div></div>
+    <div class="feat-card" onclick="toggleFeat(this)"><div class="feat-badge">more options</div><div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M3 11h18v6a4 4 0 01-4 4H7a4 4 0 01-4-4v-6z"/><path d="M3 11l1-4h16l1 4"/><path d="M12 4v3"/></svg></div><div class="feat-header"><h3>What Can I Cook Right Now?</h3><button class="feat-toggle" aria-label="Expand"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="feat-body"><p>Turn leftovers and random ingredients into something delicious. Flaffel's AI has you covered every single time.</p></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="join">
+  <div class="cta-inner">
+    <span class="cta-wordmark">flaffel</span>
+    <h2>Dinner decisions, finally decided.</h2>
+    <p>Join the waitlist — early access and launch perks reserved for those who sign up now.</p>
+    <form id="ctaForm" class="cta-form">
+      <input type="hidden" name="access_key" value="1bf9dafd-9dc5-42ff-b6cf-1cc6b5b076db">
+      <input type="hidden" name="subject" value="New Flaffel Waitlist Signup (CTA)">
+      <input type="hidden" name="from_name" value="Flaffel Waitlist">
+      <input type="text" name="_gotcha" style="display:none" aria-hidden="true">
+      <input type="email" name="email" placeholder="Your email address" required autocomplete="email">
+      <button type="submit">Count Me In</button>
+    </form>
+    <div class="cta-success" id="ctaSuccess">
+      <div>You're in! 🎉</div>
+      <div style="font-size:1rem;font-weight:400;color:rgba(250,245,240,.65);margin:8px 0 16px">Thanks for signing up — check your email for a confirmation.</div>
+      <div class="cta-share">
+        <p class="share-label" style="color:rgba(250,245,240,.45);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Spread the word</p>
+        <div class="share-btns">
+          <a class="share-btn whatsapp" href="https://wa.me/?text=I%20just%20joined%20the%20flaffel%20waitlist%20%E2%80%94%20it%27s%20an%20app%20that%20settles%20the%20%22what%27s%20for%20dinner%3F%22%20debate%20for%20good.%20Sign%20up%20here%3A%20https%3A%2F%2Fflaffel.app" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <span>WhatsApp</span>
+          </a>
+          <a class="share-btn twitter" href="https://twitter.com/intent/tweet?text=Just%20joined%20the%20flaffel%20waitlist%20%F0%9F%8D%BD%EF%B8%8F%20%E2%80%94%20finally%20an%20app%20that%20solves%20%22what%27s%20for%20dinner%3F%22%20for%20good.%20Sign%20up%3A%20https%3A%2F%2Fflaffel.app" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <span>X / Twitter</span>
+          </a>
+          <a class="share-btn facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fflaffel.app" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.313 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg><span>Facebook</span></a>
+          <a class="share-btn email" href="/cdn-cgi/l/email-protection#4e713d3b2c242b2d3a7317213b6b7c7e202b2b2a6b7c7e3a216b7c7e3a3c376b7c7e28222f28282b22682c212a3773062b376f6b7c7e076b7c7e243b3d3a6b7c7e242127202b2a6b7c7e3a262b6b7c7e28222f28282b226b7c7e392f273a22273d3a6b7c7e6b0b7c6b767e6b777a6b7c7e273a6b7c793d6b7c7e2f206b7c7e2f3e3e6b7c7e3a262f3a6b7c7e2827202f2222376b7c7e3d2122382b3d6b7c7e6b7c7c39262f3a6b7c793d6b7c7e28213c6b7c7e2a2720202b3c6b7d086b7c7c6b7c7e0d262b2d256b7c7e273a6b7c7e213b3a6b7d0f6b7c7e263a3a3e3d6b7d0f6b7c086b7c0828222f28282b22602f3e3e" style="background:rgba(255,255,255,.08);color:#FAF5F0;border:1.5px solid rgba(255,255,255,.2)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span>Email a friend</span>
+          </a>
+          <button class="share-btn copy" onclick="copyLink(this)" type="button" style="background:rgba(255,255,255,.08);color:#FAF5F0;border:1.5px solid rgba(255,255,255,.2)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            <span>Copy link</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <p class="cta-legal">By submitting your email you agree to receive beta launch updates from flaffel. No spam, no selling. Unsubscribe anytime.</p>
+    <div class="store-btns">
+      <a href="#" class="store-btn"><svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg><div class="st"><div class="ss">Coming soon on the</div><div class="sb2">App Store</div></div></a>
+      <a href="#" class="store-btn"><svg viewBox="0 0 22 24" fill="white"><path d="M1.22.27C.89.62.7 1.15.7 1.83v20.34c0 .68.19 1.21.52 1.56l.08.08L12.62 12.5v-.26l-.26-.26L1.22.27z"/><path d="M16.5 16.38l-3.88-3.88v-.26l3.88-3.88.09.05 4.6 2.61c1.31.75 1.31 1.97 0 2.71l-4.6 2.61-.09.04z"/><path d="M16.59 16.34L12.62 12.37 1.3 23.73c.43.46 1.14.52 1.95.07l13.34-7.46z"/><path d="M16.59 8.42L3.25.96C2.44.51 1.73.57 1.3 1.03l11.32 11.34 3.97-3.95z"/></svg><div class="st"><div class="ss">Coming soon on</div><div class="sb2">Google Play</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="foot-logo">flaffel</span>
+  <p>© 2026 Flaffel. All rights reserved.</p>
+</footer>
+
+<!-- STICKY BAR -->
+<div class="sbar" id="sBar">
+  <form id="stickyForm">
+    <input type="hidden" name="access_key" value="1bf9dafd-9dc5-42ff-b6cf-1cc6b5b076db">
+    <input type="hidden" name="subject" value="New Flaffel Waitlist Signup (Sticky)">
+    <input type="hidden" name="from_name" value="Flaffel Waitlist">
+    <input type="text" name="_gotcha" style="display:none" aria-hidden="true">
+    <input type="email" name="email" placeholder="Your email" required autocomplete="email">
+    <button type="submit">Join Beta</button>
+  </form>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastMsg"></span>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+var signedUp = false;
+
+function handleForm(formId, successId, wrapId){
+  var form = document.getElementById(formId);
+  if(!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    var fd = new FormData(form);
+    // Hide whichever form was submitted
+    if(wrapId){ var w = document.getElementById(wrapId); if(w) w.style.display='none'; }
+    else { form.style.display='none'; }
+    // Show BOTH success states
+    var heroS = document.getElementById('heroSuccess');
+    var ctaS  = document.getElementById('ctaSuccess');
+    var hfw   = document.getElementById('hero-form-wrap');
+    if(heroS){ if(hfw) hfw.style.display='none'; heroS.classList.add('show'); }
+    if(ctaS) { ctaS.classList.add('show'); document.getElementById('ctaForm') && (document.getElementById('ctaForm').style.display='none'); }
+    // Hide sticky bar
+    signedUp = true;
+    var sb = document.getElementById('sBar'); if(sb) sb.classList.remove('vi');
+    launchConfetti();
+    showToast("You're on the list! 🎉 Check your email");
+    fetch('https://api.web3forms.com/submit', {method:'POST', body:fd}).catch(function(){});
+    return false;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  var track = document.getElementById('carouselTrack');
+  if(track){
+    var isDown=false, startX=0, scrollLeft=0;
+    track.addEventListener('touchstart', function(e){ isDown=true; startX=e.touches[0].clientX; scrollLeft=track.parentElement.scrollLeft; track.style.animationPlayState='paused'; },{passive:true});
+    track.addEventListener('touchmove', function(e){ if(!isDown)return; track.parentElement.scrollLeft=scrollLeft+(startX-e.touches[0].clientX); },{passive:true});
+    track.addEventListener('touchend', function(){ isDown=false; setTimeout(function(){track.style.animationPlayState='running';},1000); });
+    var outer=track.parentElement; outer.style.overflowX='auto'; outer.style.scrollbarWidth='none'; outer.style.webkitOverflowScrolling='touch';
+  }
+  setTimeout(function(){ var p=document.getElementById('pbar'); if(p) p.style.width='70%'; }, 400);
+  handleForm('heroForm',   'heroSuccess', 'hero-form-wrap');
+  handleForm('ctaForm',    'ctaSuccess',  null);
+  handleForm('stickyForm', 'heroSuccess', null);
+
+  var hfw = document.getElementById('hero-form-wrap');
+  var sb  = document.getElementById('sBar');
+  if(window.innerWidth<=768 && hfw && sb){
+    var obs = new IntersectionObserver(function(entries){
+      if(signedUp) return;
+      sb.classList.toggle('vi', !entries[0].isIntersecting);
+    },{threshold:0.1});
+    obs.observe(hfw);
+  }
+});
+</script>
+</div>
+</body></html>
